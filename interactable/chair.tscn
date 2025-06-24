@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://dgwydnjkbagj5"]
+
+[ext_resource type="Script" uid="uid://dgd57xxegbuc5" path="res://interactable/interactable.gd" id="1_cpyd4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ljj7u"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ljj7u"]
+
+[node name="Chair" type="StaticBody3D"]
+collision_layer = 5
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_ljj7u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_ljj7u")
+
+[node name="FocusTarget" type="Node3D" parent="."]
+
+[node name="Interactable" type="Node" parent="." node_paths=PackedStringArray("focus_target")]
+script = ExtResource("1_cpyd4")
+focus_target = NodePath("../FocusTarget")
+dialogues = Array[String](["This is a chair", "But not exactly, its
+ just a box mesh"])
+metadata/_custom_type_script = "uid://dgd57xxegbuc5"

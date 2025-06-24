@@ -1,0 +1,47 @@
+[gd_scene load_steps=10 format=3 uid="uid://dvt72kowexqch"]
+
+[ext_resource type="PackedScene" uid="uid://eun1ujiv3phy" path="res://player/Player.tscn" id="1_itxqv"]
+[ext_resource type="PackedScene" uid="uid://dgwydnjkbagj5" path="res://interactable/chair.tscn" id="2_v0l8b"]
+[ext_resource type="PackedScene" uid="uid://bjkr0ao1woxql" path="res://interactable/npc_test_item_giver.tscn" id="3_wp4xf"]
+[ext_resource type="PackedScene" uid="uid://i3wsjs7e1kj1" path="res://interactable/npc_test_item_receiver.tscn" id="4_brvut"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_itxqv"]
+
+[sub_resource type="Sky" id="Sky_v0l8b"]
+sky_material = SubResource("ProceduralSkyMaterial_itxqv")
+
+[sub_resource type="Environment" id="Environment_wp4xf"]
+background_mode = 2
+sky = SubResource("Sky_v0l8b")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_no8bm"]
+size = Vector2(20, 20)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_no8bm"]
+
+[node name="main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_wp4xf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_no8bm")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("WorldBoundaryShape3D_no8bm")
+
+[node name="Player" parent="." instance=ExtResource("1_itxqv")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.252812, 0.967515, 0, -0.967515, -0.252812, 0, 19.0273, 15.6378)
+
+[node name="Chair" parent="." instance=ExtResource("2_v0l8b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.16394, 0, 0)
+
+[node name="NPCItemGiver" parent="." instance=ExtResource("3_wp4xf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.971407, 0, 0)
+
+[node name="NPCItemReceiver" parent="." instance=ExtResource("4_brvut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.05128)
