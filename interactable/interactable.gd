@@ -29,7 +29,7 @@ func _ready() -> void:
 
 func _start_interact() -> void:
 	for child in get_children():
-		if child is Action:
+		if child is InteractableAction:
 			is_being_interacted = true ## TODO: Turn this off later
 			child._start_action()
 
@@ -45,7 +45,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 	var warnings : PackedStringArray = []
 	var found_action : bool = false
 	for child in get_children():
-		if child is Action:
+		if child is InteractableAction:
 			found_action = true
 			break
 

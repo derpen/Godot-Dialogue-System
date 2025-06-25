@@ -20,6 +20,8 @@ collision_mask = 0
 focus_target = NodePath("../CollisionShape3D/head/FocusTarget")
 
 [node name="InteractableAction" parent="Interactable" instance=ExtResource("2_x4tgo")]
+action_type = null
+dialogues = null
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

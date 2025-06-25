@@ -19,7 +19,7 @@ var dialogues : Array[String]
 ## Choice related
 ## key would be choices, value would be the next Action to call
 ## key would be shown as label for Choice Buttons in Player.tscn
-var choices : Dictionary[String, PossibleActions]
+var choices : Dictionary[String, InteractableAction]
 
 
 ## Item related
