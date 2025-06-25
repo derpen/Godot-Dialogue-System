@@ -19,8 +19,8 @@ var dialogues : Array[String]
 ## Choice related
 ## key would be choices, value would be the next Action to call
 ## key would be shown as label for Choice Buttons in Player.tscn
-var choices : Dictionary[String, InteractableAction]
-
+# var choices : Dictionary[String, InteractableAction]
+var choices : Dictionary[String, NodePath]
 
 ## Item related
 ## Will always check before giving
@@ -32,7 +32,7 @@ var dialogues_item_check_success : Array[String]
 
 var has_given_item : bool = false ## If item given already, will just skip this
 
-var next_action : InteractableAction ## Can be empty
+var next_action : NodePath ## Can be empty
 
 var has_been_visited : bool = false
 
@@ -67,12 +67,36 @@ func _get_property_list():
 				"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
 			})
 
+			# ret.append({
+			# 	"name": &"next_action",
+			# 	"type": TYPE_OBJECT,
+			# 	"hint" : PROPERTY_HINT_NODE_TYPE,
+			# 	"hint_string" : "InteractableAction",
+			# 	"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
+			# })
+
+			ret.append({
+				"name": &"next_action",
+				"type": TYPE_NODE_PATH,
+				"hint" : PROPERTY_HINT_NODE_TYPE,
+				"hint_string" : "NodePath",
+				"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
+			})
+
 		if action_type == ACTION_TYPE.CHOICE:
+			# ret.append({
+			# 	"name": &"choices",
+			# 	"type": TYPE_DICTIONARY,
+			# 	# "hint": PROPERTY_HINT_DICTIONARY_TYPE,
+			# 	"hint_string" : "%d:;%d/%d:InteractableAction" % [TYPE_STRING, TYPE_OBJECT, PROPERTY_HINT_NODE_TYPE],
+			# 	"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
+			# })
+
 			ret.append({
 				"name": &"choices",
 				"type": TYPE_DICTIONARY,
-				"hint": PROPERTY_HINT_DICTIONARY_TYPE,
-				"hint_string" : "%d:;%d/%d:InteractableAction" % [TYPE_STRING, TYPE_OBJECT, PROPERTY_HINT_NODE_TYPE],
+				# "hint": PROPERTY_HINT_DICTIONARY_TYPE,
+				"hint_string" : "%d:;%d/%d:NodePath" % [TYPE_STRING, TYPE_NODE_PATH, PROPERTY_HINT_NODE_TYPE],
 				"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
 			})
 
@@ -100,12 +124,20 @@ func _get_property_list():
 				"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
 			})
 
-		ret.append({
-			"name": &"next_action",
-			"type": TYPE_OBJECT,
-			"hint" : PROPERTY_HINT_NODE_TYPE,
-			"hint_string" : "InteractableAction",
-			"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
-		})
+			# ret.append({
+			# 	"name": &"next_action",
+			# 	"type": TYPE_OBJECT,
+			# 	"hint" : PROPERTY_HINT_NODE_TYPE,
+			# 	"hint_string" : "InteractableAction",
+			# 	"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
+			# })
+
+			ret.append({
+				"name": &"next_action",
+				"type": TYPE_NODE_PATH,
+				"hint" : PROPERTY_HINT_NODE_TYPE,
+				"hint_string" : "NodePath",
+				"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
+			})
 
 		return ret
