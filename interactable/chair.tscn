@@ -18,6 +18,13 @@ focus_target = NodePath("../FocusTarget")
 dialogues = Array[String](["This is a chair", "Well, not really, it's not,
 it's currently just a box", "Hopefully this will be
 a chair later"])
+next_action = NodePath("Inspect_Two")
+
+[node name="Inspect_Two" parent="Interactable/Inspect" instance=ExtResource("2_btrd3")]
+dialogues = Array[String](["I will have the desire
+to make this into a 
+chair later"])
+next_action = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)

@@ -17,7 +17,6 @@ var inventory : Dictionary
 enum PLAYER_STATE { WALKING, INTERACTING }
 
 func _ready() -> void:
-	dialogue_handler.dialogue_ended.connect(_set_player_state_walking)
 	Input.set_mouse_mode(mouse_mode)
 
 

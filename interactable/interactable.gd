@@ -7,8 +7,9 @@ class_name Interactable extends Node
 @export var rotate_to_player : bool = false
 @export var focus_target : Node3D ## Player will focus on this, just a Node3D
 
+var player_node : PlayerController
 var parent_node : Node3D
-var is_being_interacted : bool = false
+var is_being_interacted : bool = false ## TODO: future me here, what is this for
 
 func _ready() -> void:
 	if !Engine.is_editor_hint():

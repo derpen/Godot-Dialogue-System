@@ -19,28 +19,29 @@ collision_mask = 0
 [node name="Interactable" parent="." node_paths=PackedStringArray("focus_target") instance=ExtResource("2_4ea8n")]
 focus_target = NodePath("../CollisionShape3D/head/FocusTarget")
 
-[node name="FirstTalk" parent="Interactable" instance=ExtResource("2_d018b")]
-dialogues = Array[String](["Hey, I got something for you", "Do you want it ?"])
-next_action = NodePath("ChoiceGivingItem")
+[node name="FirstDialogue" parent="Interactable" instance=ExtResource("2_d018b")]
+dialogues = Array[String](["Hello", "Do you want this item?"])
+next_action = NodePath("ChoiceOfferingItem")
 
-[node name="ChoiceGivingItem" parent="Interactable/FirstTalk" instance=ExtResource("2_d018b")]
+[node name="ChoiceOfferingItem" parent="Interactable/FirstDialogue" instance=ExtResource("2_d018b")]
 action_type = 1
 choices = Dictionary[String, NodePath]({
 "Accept": NodePath("GivingItem"),
 "Refuse": NodePath("..")
 })
 
-[node name="GivingItem" parent="Interactable/FirstTalk/ChoiceGivingItem" instance=ExtResource("2_d018b")]
+[node name="GivingItem" parent="Interactable/FirstDialogue/ChoiceOfferingItem" instance=ExtResource("2_d018b")]
 action_type = 2
 item_to_check = ""
-item_to_give = "NewItem"
+item_to_give = "Money"
 dialogues_item_check_fail = Array[String]([])
-dialogues_item_check_success = Array[String](["Here, you go"])
+dialogues_item_check_success = Array[String](["Ok, here you go"])
 next_action = NodePath("FinalDialogue")
 
-[node name="FinalDialogue" parent="Interactable/FirstTalk/ChoiceGivingItem/GivingItem" instance=ExtResource("2_d018b")]
-dialogues = Array[String](["Please use it properly", "Like, use it on this guy 
-next to me for example"])
+[node name="FinalDialogue" parent="Interactable/FirstDialogue/ChoiceOfferingItem/GivingItem" instance=ExtResource("2_d018b")]
+dialogues = Array[String](["Use it well", "Like for example,
+give it to this other
+guy in front"])
 next_action = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

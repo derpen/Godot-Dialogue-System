@@ -19,8 +19,22 @@ collision_mask = 0
 [node name="Interactable" parent="." node_paths=PackedStringArray("focus_target") instance=ExtResource("1_lfq20")]
 focus_target = NodePath("../CollisionShape3D/head/FocusTarget")
 
-[node name="InteractableAction" parent="Interactable" instance=ExtResource("2_x4tgo")]
-dialogues = Array[String]([])
+[node name="FirstDialogue" parent="Interactable" instance=ExtResource("2_x4tgo")]
+dialogues = Array[String](["Hey, you have item?"])
+next_action = NodePath("")
+
+[node name="CheckItem" parent="Interactable/FirstDialogue" instance=ExtResource("2_x4tgo")]
+action_type = 2
+item_to_check = "Money"
+item_to_give = ""
+dialogues_item_check_fail = Array[String](["Come to me if you have it", "I really need it"])
+dialogues_item_check_success = Array[String](["Oh you have it!", "Can I have it ?"])
+next_action = NodePath("")
+
+[node name="FinalDialogue" parent="Interactable/FirstDialogue/CheckItem" instance=ExtResource("2_x4tgo")]
+dialogues = Array[String](["Thanks man", "This will help me 
+a lot"])
+next_action = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

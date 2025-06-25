@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://dvt72kowexqch"]
+[gd_scene load_steps=11 format=3 uid="uid://dvt72kowexqch"]
 
 [ext_resource type="PackedScene" uid="uid://eun1ujiv3phy" path="res://player/Player.tscn" id="1_itxqv"]
 [ext_resource type="PackedScene" uid="uid://dgwydnjkbagj5" path="res://interactable/chair.tscn" id="2_v0l8b"]
 [ext_resource type="PackedScene" uid="uid://bjkr0ao1woxql" path="res://interactable/npc_test_item_giver.tscn" id="3_wp4xf"]
 [ext_resource type="PackedScene" uid="uid://i3wsjs7e1kj1" path="res://interactable/npc_test_item_receiver.tscn" id="4_brvut"]
+[ext_resource type="PackedScene" uid="uid://c63ybpwk6l64e" path="res://interactable/npc_test_kidnapper.tscn" id="5_0ha60"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_itxqv"]
 
@@ -45,3 +46,6 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.971
 
 [node name="NPCItemReceiver" parent="." instance=ExtResource("4_brvut")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -1.05128)
+
+[node name="NPCKidnapper" parent="." instance=ExtResource("5_0ha60")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.49559)

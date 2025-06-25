@@ -1,0 +1,64 @@
+[gd_scene load_steps=7 format=3 uid="uid://c63ybpwk6l64e"]
+
+[ext_resource type="PackedScene" uid="uid://b55ybw77u563" path="res://interactable/interactable.tscn" id="1_7hstg"]
+[ext_resource type="PackedScene" uid="uid://t5x38d5w0gmf" path="res://interactable/interactable_action.tscn" id="2_umpva"]
+[ext_resource type="Script" uid="uid://covacw536d8o2" path="res://interactable/npc_test_kidnapper_gameover.gd" id="3_umpva"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_i76gx"]
+radius = 0.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_i76gx"]
+size = Vector3(0.2, 0.2, 0.2)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_4ea8n"]
+radius = 0.2
+
+[node name="NPCKidnapper" type="CharacterBody3D"]
+collision_layer = 5
+collision_mask = 0
+
+[node name="Interactable" parent="." node_paths=PackedStringArray("focus_target") instance=ExtResource("1_7hstg")]
+focus_target = NodePath("../CollisionShape3D/head/FocusTarget")
+
+[node name="FirstDialogue" parent="Interactable" instance=ExtResource("2_umpva")]
+dialogues = Array[String](["Psst Kid", "You want some free
+candy ?"])
+next_action = NodePath("ChoiceComeWithHim")
+
+[node name="ChoiceComeWithHim" parent="Interactable/FirstDialogue" instance=ExtResource("2_umpva")]
+action_type = 1
+choices = Dictionary[String, NodePath]({
+"Accept Offer": NodePath("ChoiceAcceptDialogue/GameOverAction"),
+"Run Away": NodePath("ChoiceRun")
+})
+
+[node name="ChoiceAcceptDialogue" parent="Interactable/FirstDialogue/ChoiceComeWithHim" instance=ExtResource("2_umpva")]
+dialogues = Array[String]([])
+next_action = NodePath("")
+
+[node name="GameOverAction" parent="Interactable/FirstDialogue/ChoiceComeWithHim/ChoiceAcceptDialogue" node_paths=PackedStringArray("custom_action") instance=ExtResource("2_umpva")]
+action_type = 3
+custom_action = NodePath("GameOverScript")
+next_action = NodePath("")
+
+[node name="GameOverScript" type="Node" parent="Interactable/FirstDialogue/ChoiceComeWithHim/ChoiceAcceptDialogue/GameOverAction"]
+script = ExtResource("3_umpva")
+
+[node name="ChoiceRun" parent="Interactable/FirstDialogue/ChoiceComeWithHim" instance=ExtResource("2_umpva")]
+dialogues = Array[String](["Tch.", "Kids these days are smart"])
+next_action = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_i76gx")
+
+[node name="head" type="MeshInstance3D" parent="CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.56144, -0.196867)
+mesh = SubResource("BoxMesh_i76gx")
+skeleton = NodePath("../..")
+
+[node name="FocusTarget" type="Node3D" parent="CollisionShape3D/head"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+mesh = SubResource("CapsuleMesh_4ea8n")
+skeleton = NodePath("../..")

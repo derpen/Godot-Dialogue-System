@@ -73,11 +73,9 @@ func _interact() -> void:
 			## Might wanna look into it more
 			interacted_object = child.focus_target
 
-			## TODO
-			## This WILL break
-			## Change this
-			var current_dialogues : Array[String] = child.dialogues
-			dialogue_handler._dialogue_play(current_dialogues)
+			## Activate the interact
+			child.player_node = player_character
+			child._start_interact()
 
 			break
 
