@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PossibleActions" load_steps=2 format=3 uid="uid://p1x1imc860vi"]
+
+[ext_resource type="Script" uid="uid://bdpgpx7oexurt" path="res://interactable/interactable_possible_actions.gd" id="1_ihqni"]
+
+[resource]
+script = ExtResource("1_ihqni")
+action_type = 0
+dialogues = Array[String]([])
+choices = Dictionary[String, String]({})
+item_to_check = ""
+item_to_give = ""

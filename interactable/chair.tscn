@@ -1,6 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://dgwydnjkbagj5"]
+[gd_scene load_steps=7 format=3 uid="uid://dgwydnjkbagj5"]
 
-[ext_resource type="Script" uid="uid://dgd57xxegbuc5" path="res://interactable/interactable.gd" id="1_cpyd4"]
+[ext_resource type="PackedScene" uid="uid://b55ybw77u563" path="res://interactable/interactable.tscn" id="1_cpyd4"]
+[ext_resource type="PackedScene" uid="uid://t5x38d5w0gmf" path="res://interactable/interactable_action.tscn" id="2_btrd3"]
+[ext_resource type="Script" uid="uid://bdpgpx7oexurt" path="res://interactable/interactable_possible_actions.gd" id="3_48gkr"]
+
+[sub_resource type="Resource" id="Resource_48gkr"]
+script = ExtResource("3_48gkr")
+action_type = 0
+dialogues = Array[String]([])
+metadata/_custom_type_script = "uid://bdpgpx7oexurt"
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ljj7u"]
 
@@ -9,6 +17,12 @@
 [node name="Chair" type="StaticBody3D"]
 collision_layer = 5
 collision_mask = 0
+
+[node name="Interactable" parent="." node_paths=PackedStringArray("focus_target") instance=ExtResource("1_cpyd4")]
+focus_target = NodePath("../FocusTarget")
+
+[node name="InteractableAction" parent="Interactable" instance=ExtResource("2_btrd3")]
+current_action = SubResource("Resource_48gkr")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
@@ -19,10 +33,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 mesh = SubResource("BoxMesh_ljj7u")
 
 [node name="FocusTarget" type="Node3D" parent="."]
-
-[node name="Interactable" type="Node" parent="." node_paths=PackedStringArray("focus_target")]
-script = ExtResource("1_cpyd4")
-focus_target = NodePath("../FocusTarget")
-dialogues = Array[String](["This is a chair", "But not exactly, its
- just a box mesh"])
-metadata/_custom_type_script = "uid://dgd57xxegbuc5"

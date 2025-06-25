@@ -41,7 +41,7 @@ transform = Transform3D(1, 0, 0, 0, -0.252812, 0.967515, 0, -0.967515, -0.252812
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.16394, 0, 0)
 
 [node name="NPCItemGiver" parent="." instance=ExtResource("3_wp4xf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.971407, 0, 0)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.971407, 0, 0)
 
 [node name="NPCItemReceiver" parent="." instance=ExtResource("4_brvut")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.05128)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -1.05128)

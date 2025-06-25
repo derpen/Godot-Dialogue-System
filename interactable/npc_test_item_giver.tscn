@@ -1,6 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://bjkr0ao1woxql"]
+[gd_scene load_steps=8 format=3 uid="uid://bjkr0ao1woxql"]
 
-[ext_resource type="Script" uid="uid://dgd57xxegbuc5" path="res://interactable/interactable.gd" id="1_i76gx"]
+[ext_resource type="PackedScene" uid="uid://b55ybw77u563" path="res://interactable/interactable.tscn" id="2_4ea8n"]
+[ext_resource type="PackedScene" uid="uid://t5x38d5w0gmf" path="res://interactable/interactable_action.tscn" id="2_d018b"]
+[ext_resource type="Script" uid="uid://bdpgpx7oexurt" path="res://interactable/interactable_possible_actions.gd" id="3_d018b"]
+
+[sub_resource type="Resource" id="Resource_d2ruh"]
+script = ExtResource("3_d018b")
+action_type = 0
+dialogues = Array[String]([])
+choices = Dictionary[String, String]({})
+item_to_check = ""
+item_to_give = ""
+metadata/_custom_type_script = "uid://bdpgpx7oexurt"
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_i76gx"]
 radius = 0.2
@@ -14,6 +25,12 @@ radius = 0.2
 [node name="NPCItemGiver" type="CharacterBody3D"]
 collision_layer = 5
 collision_mask = 0
+
+[node name="Interactable" parent="." node_paths=PackedStringArray("focus_target") instance=ExtResource("2_4ea8n")]
+focus_target = NodePath("../CollisionShape3D/head/FocusTarget")
+
+[node name="FirstTalking" parent="Interactable" instance=ExtResource("2_d018b")]
+current_action = SubResource("Resource_d2ruh")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -29,10 +46,3 @@ skeleton = NodePath("../..")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
 mesh = SubResource("CapsuleMesh_4ea8n")
 skeleton = NodePath("../..")
-
-[node name="Interactable" type="Node" parent="." node_paths=PackedStringArray("focus_target")]
-script = ExtResource("1_i76gx")
-focus_target = NodePath("../CollisionShape3D/head/FocusTarget")
-dialogues = Array[String](["Hi", "Here, take this", "I hope you put good 
-use to it"])
-metadata/_custom_type_script = "uid://dgd57xxegbuc5"

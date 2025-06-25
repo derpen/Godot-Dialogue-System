@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://i3wsjs7e1kj1"]
+[gd_scene load_steps=6 format=3 uid="uid://i3wsjs7e1kj1"]
 
-[ext_resource type="Script" uid="uid://dgd57xxegbuc5" path="res://interactable/interactable.gd" id="1_lfq20"]
+[ext_resource type="PackedScene" uid="uid://b55ybw77u563" path="res://interactable/interactable.tscn" id="1_lfq20"]
+[ext_resource type="PackedScene" uid="uid://t5x38d5w0gmf" path="res://interactable/interactable_action.tscn" id="2_x4tgo"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_i76gx"]
 radius = 0.2
@@ -14,6 +15,11 @@ radius = 0.2
 [node name="NPCItemReceiver" type="CharacterBody3D"]
 collision_layer = 5
 collision_mask = 0
+
+[node name="Interactable" parent="." node_paths=PackedStringArray("focus_target") instance=ExtResource("1_lfq20")]
+focus_target = NodePath("../CollisionShape3D/head/FocusTarget")
+
+[node name="InteractableAction" parent="Interactable" instance=ExtResource("2_x4tgo")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -29,11 +35,3 @@ skeleton = NodePath("../..")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
 mesh = SubResource("CapsuleMesh_4ea8n")
 skeleton = NodePath("../..")
-
-[node name="Interactable" type="Node" parent="." node_paths=PackedStringArray("focus_target")]
-script = ExtResource("1_lfq20")
-focus_target = NodePath("../CollisionShape3D/head/FocusTarget")
-dialogues = Array[String](["Do you have this 
-item?", "I would love it if
-you have it"])
-metadata/_custom_type_script = "uid://dgd57xxegbuc5"

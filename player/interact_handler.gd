@@ -18,7 +18,7 @@ func _input(_event: InputEvent) -> void:
 
 func _physics_process(_delta: float) -> void:
 	if player_character.player_state == player_character.PLAYER_STATE.WALKING:
-		_handle_raycast()
+		_handle_crosshair()
 
 	## Slowly look at the thing we are interacting with
 	else:
@@ -46,7 +46,7 @@ func _physics_process(_delta: float) -> void:
 	
 
 var currently_colliding : bool = false
-func _handle_raycast() -> void:
+func _handle_crosshair() -> void:
 	## Almost guaranteed to return only 
 	## nodes with Interactable, since we are using 
 	## Collision Masks
@@ -72,6 +72,10 @@ func _interact() -> void:
 			## Focus target sometimes still not accurate
 			## Might wanna look into it more
 			interacted_object = child.focus_target
+
+			## TODO
+			## This WILL break
+			## Change this
 			var current_dialogues : Array[String] = child.dialogues
 			dialogue_handler._dialogue_play(current_dialogues)
 
