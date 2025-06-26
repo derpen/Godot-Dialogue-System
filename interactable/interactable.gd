@@ -5,7 +5,13 @@ class_name Interactable extends Node
 ## player can interact with something, and then
 ## a dialogue will play
 @export var rotate_to_player : bool = false
-@export var focus_target : Node3D ## Player will focus on this, just a Node3D
+
+## Player will focus on this, just a Node3D
+@export var focus_target : Node3D :
+	set(new_fc):
+		focus_target = new_fc
+		update_configuration_warnings()
+
 
 var player_node : PlayerController
 var parent_node : Node3D
@@ -17,7 +23,10 @@ func _ready() -> void:
 			printerr("You forgot to set focus_target for " + get_parent().name)
 
 		parent_node = get_parent()
-		if parent_node is CharacterBody3D or parent_node is StaticBody3D: ## Add more as needed. TODO: I forgot what is this for lol
+
+		## We use Layer 3 for Interactable collision mask
+		## Change as you need
+		if parent_node is CharacterBody3D or parent_node is StaticBody3D: 
 			parent_node.set_collision_layer_value(3, true)
 
 

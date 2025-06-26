@@ -23,7 +23,7 @@ var dialogues : Array[String]
 ## key would be choices, value would be the next Action to call
 ## key would be shown as label for Choice Buttons in player.tscn
 var choices : Dictionary[String, NodePath]
-var has_chosen : bool = false
+# var has_chosen : bool = false
 
 ## Item related
 ## Will always perform check before perform giving
@@ -36,14 +36,18 @@ var has_chosen : bool = false
 ## 
 ## Conversely, leave item_to_check as empty if you
 ## want an NPC to give something for free to the player
-##
 var item_to_check : String
 var item_to_give : String
 var dialogues_item_check_fail : Array[String]
 var dialogues_item_check_success : Array[String]
 var has_given_item : bool = false ## If item given already, will just skip this node
 
-var next_action : NodePath ## Can be empty
+## Can be empty
+var next_action : NodePath:
+	set(new_node):
+		next_action = new_node
+		update_configuration_warnings()
+
 
 var custom_action : InteractableCustomAction
 
@@ -55,8 +59,6 @@ var player_character : PlayerController
 func _start_action() -> void:
 	## Only perform action if hasn't been visited 
 	if !has_been_visited:
-		has_been_visited = true
-
 		## Grab reference to player_character from Interactable parent
 		## Hacky, but should work
 		## An optimization is to always send ref to player_character
@@ -69,7 +71,8 @@ func _start_action() -> void:
 		parent = parent as Interactable
 		player_character = parent.player_node
 
-		# _reset_node()
+		## Send ref to current node to player node
+		player_character.dialogue_handler.current_interact_node = self
 
 		if action_type == ACTION_TYPE.NORMAL_DIALOGUE:
 			_action_handle_dialogue()
@@ -83,51 +86,66 @@ func _start_action() -> void:
 		elif action_type == ACTION_TYPE.CUSTOM_ACTION:
 			_action_handle_custom_action()
 
+	## Else, we skip to next
+	else:
+		_start_next_action()
+
 
 func _start_next_action() -> void:
 	## Do next one here, if exists
+	has_been_visited = true
+
 	if next_action:
 		var next : InteractableAction = get_node(next_action) as InteractableAction
+		## Send the has_chosen flag
+		## Required to handle recursive tree
+
+		# if has_chosen:
+		# 	next.has_chosen = true
+
 		next._start_action()
 
 	else:
-		## No more action, release player
-		player_character._set_player_state_walking()
+		_break_out()
 
-		## Final nodes will always be repeating
-		has_been_visited = false 
+
+## Breaking out of the tree
+func _break_out() -> void:
+	## No more action, release player
+	player_character._set_player_state_walking()
+
+	## Final nodes will always be repeating
+	has_been_visited = false 
 		
 
-# ## Not sure if this is needed but we'll see
-# func _reset_node() -> void:
-# 	player_character.dialogue_handler.dialogue_ended.disconnect(_start_next_action)
-
-
 func _action_handle_dialogue() -> void:
-	## Send this to player
 	player_character.dialogue_handler._dialogue_play(dialogues)
 
 
-
-	## SIGNAL IS A DOGSHIT IDEA
-	# player_character.dialogue_handler.dialogue_ended.connect(_start_next_action)
-
-
 func _action_handle_choice() -> void:
-	## Whatever is chosen is then assigned to next_action
-	# has_chosen = true
+	player_character.dialogue_handler._choices_show(choices)
+
 	# if !has_chosen:
-	# 	## Do the action here
-	# 	pass
-	# 	next_action = chosen_choice
+	# 	## Send choices data to handler
+	# 	has_chosen = true
+	# 	player_character.dialogue_handler._choices_show(choices)
+
 	# else:
-	#	## Else, just go straight to next_action
-	#	pass
-	pass
+	# 	## Else, just go straight to next_action
+	# 	## I think this is not needed?
+	# 	## Since if node has been visited,
+	# 	## this function will never be called anyway
+	# 	_start_next_action()
+
+
+func _action_handle_choice_picked(which_choice : NodePath) -> void:
+	## Whatever is chosen is then assigned to next_action
+	next_action = which_choice
+	_start_next_action()
 	
 
 func _action_handle_item() -> void:
-	pass
+	print("we haven't implemented Item handling yet, lol")
 
 
 ## Can add custom scripts here
@@ -137,6 +155,11 @@ func _action_handle_item() -> void:
 ## or if a certain choice option should trigger certain flag
 func _action_handle_custom_action() -> void:
 	pass
+
+
+func _clear_interact_tree() -> void:
+	pass
+
 
 
 ## Conditional export voodoo (why tf is this so complicated)
@@ -244,3 +267,23 @@ func _get_property_list():
 		
 
 		return ret
+
+
+## Make sure that next_action is NEVER a sibling
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings : PackedStringArray = []
+
+	if next_action:
+		var next = get_node(next_action)
+		if next is not InteractableAction:
+			warnings.append("
+			Please only add InteractableAction nodes
+			")
+
+		if next.get_parent() == get_parent():
+			warnings.append("
+			Warning: Next action must NOT be a sibling node or itself. 
+			Please change to either a parent, a child, or leave it empty
+			")
+
+	return warnings

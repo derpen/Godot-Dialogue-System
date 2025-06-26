@@ -82,7 +82,7 @@ scale = Vector2(0.02, 0.02)
 pivot_offset = Vector2(128, 128)
 texture = ExtResource("4_ei5ns")
 
-[node name="DialogueHolder" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("dialogue_label", "choice_container", "choice_one", "choice_two")]
+[node name="Inventory" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -90,13 +90,34 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Inventory"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+
+[node name="InventoryNotification" type="RichTextLabel" parent="CanvasLayer/Inventory/MarginContainer"]
+layout_mode = 2
+
+[node name="DialogueHolder" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("dialogue_label", "choice_container", "button_container", "player_character")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("4_qt0wr")
 character_cooldown = 0.0
 sentence_cooldown = 0.2
 dialogue_label = NodePath("VBoxContainer/RichTextLabel")
 choice_container = NodePath("VBoxContainer/ChoiceContainer")
-choice_one = NodePath("VBoxContainer/ChoiceContainer/CenterContainer/HBoxContainer/ChoiceOne")
-choice_two = NodePath("VBoxContainer/ChoiceContainer/CenterContainer/HBoxContainer/ChoiceTwo")
+button_container = NodePath("VBoxContainer/ChoiceContainer/CenterContainer/HBoxContainer")
+player_character = NodePath("../..")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/DialogueHolder"]
 layout_mode = 1
@@ -128,14 +149,6 @@ grow_vertical = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/DialogueHolder/VBoxContainer/ChoiceContainer/CenterContainer"]
 layout_mode = 2
 
-[node name="ChoiceOne" type="Button" parent="CanvasLayer/DialogueHolder/VBoxContainer/ChoiceContainer/CenterContainer/HBoxContainer"]
-layout_mode = 2
-text = "Choice 1"
-
-[node name="ChoiceTwo" type="Button" parent="CanvasLayer/DialogueHolder/VBoxContainer/ChoiceContainer/CenterContainer/HBoxContainer"]
-layout_mode = 2
-text = "Choice 2"
-
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/DialogueHolder/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -147,30 +160,6 @@ scroll_active = false
 autowrap_mode = 0
 horizontal_alignment = 1
 
-[node name="Inventory" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Inventory"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-
-[node name="InventoryNotification" type="RichTextLabel" parent="CanvasLayer/Inventory/MarginContainer"]
-layout_mode = 2
-
 [node name="TemporaryLightRemoveLaterMightWannaHaveALayerToOnlyLightUpCertainThings" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.60264, 0)
 omni_range = 1.0
-
-[connection signal="pressed" from="CanvasLayer/DialogueHolder/VBoxContainer/ChoiceContainer/CenterContainer/HBoxContainer/ChoiceOne" to="CanvasLayer/DialogueHolder" method="_on_choice_one_pressed"]
-[connection signal="pressed" from="CanvasLayer/DialogueHolder/VBoxContainer/ChoiceContainer/CenterContainer/HBoxContainer/ChoiceTwo" to="CanvasLayer/DialogueHolder" method="_on_choice_two_pressed"]
