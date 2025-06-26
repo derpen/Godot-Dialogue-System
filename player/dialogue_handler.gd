@@ -31,6 +31,13 @@ func _show_characters(sentence: String) -> void:
 var new_choices : Dictionary
 var choices_button : Array[Button]
 func _choices_show(choices_values: Dictionary) -> void:
+	## Clear all previous buttons first
+	if !choices_button.is_empty():
+		for old_choice in choices_button:
+			old_choice.queue_free()
+
+		choices_button.clear()
+
 	player_character._change_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	choice_container.visible = true
 	new_choices = choices_values
@@ -43,6 +50,7 @@ func _choices_show(choices_values: Dictionary) -> void:
 
 		button_container.add_child(new_button)
 		choices_button.append(new_button)
+
 
 
 func _choices_pick(which_choice: NodePath) -> void:

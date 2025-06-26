@@ -55,53 +55,73 @@ var has_been_visited : bool = false
 
 var player_character : PlayerController
 
+var reset_node : bool = false
+
 ## This is where we would handle the shenanigans
 func _start_action() -> void:
 	## Only perform action if hasn't been visited 
 	if !has_been_visited:
-		## Grab reference to player_character from Interactable parent
-		## Hacky, but should work
-		## An optimization is to always send ref to player_character
-		## everytime we traverse down the tree, so it won't have to move
-		## up the tree again everytime
-		var parent = get_parent()
-		while(parent is not Interactable):
-			parent = parent.get_parent()
-		
-		parent = parent as Interactable
-		player_character = parent.player_node
-
-		## Send ref to current node to player node
-		player_character.dialogue_handler.current_interact_node = self
-
-		if action_type == ACTION_TYPE.NORMAL_DIALOGUE:
-			_action_handle_dialogue()
-
-		elif action_type == ACTION_TYPE.CHOICE:
-			_action_handle_choice()
-
-		elif action_type == ACTION_TYPE.ITEM:
-			_action_handle_item()
+		## If this node hasn't been visited BUT reset flag is still up
+		## it means we reach the end of our resetting system
+		if reset_node:
+			_break_out()
+		else:
+			## Grab reference to player_character from Interactable parent
+			## Hacky, but should work
+			## An optimization is to always send ref to player_character
+			## everytime we traverse down the tree, so it won't have to move
+			## up the tree again everytime
+			var parent = get_parent()
+			while(parent is not Interactable):
+				parent = parent.get_parent()
 			
-		elif action_type == ACTION_TYPE.CUSTOM_ACTION:
-			_action_handle_custom_action()
+			parent = parent as Interactable
+			player_character = parent.player_node
 
-	## Else, we skip to next
+			## Send ref to current node to player node
+			player_character.dialogue_handler.current_interact_node = self
+
+			if action_type == ACTION_TYPE.NORMAL_DIALOGUE:
+				_action_handle_dialogue()
+
+			elif action_type == ACTION_TYPE.CHOICE:
+				_action_handle_choice()
+
+			elif action_type == ACTION_TYPE.ITEM:
+				_action_handle_item()
+				
+			elif action_type == ACTION_TYPE.CUSTOM_ACTION:
+				_action_handle_custom_action()
 	else:
 		_start_next_action()
 
 
 func _start_next_action() -> void:
 	## Do next one here, if exists
+	## This has been visited
 	has_been_visited = true
 
 	if next_action:
 		var next : InteractableAction = get_node(next_action) as InteractableAction
-		## Send the has_chosen flag
-		## Required to handle recursive tree
 
-		# if has_chosen:
-		# 	next.has_chosen = true
+		## Check if we're going up the tree, which means we are recursing back
+		## When that happens, we want to reset the tree, and stop the interaction
+		## To do that, we set a flag for every node onward so we know to reset it
+		## We check the first element of NodePath
+		## If it's "..", then we can be sure it's recursive
+		var regex = RegEx.new()
+		regex.compile("\\.\\.") ## This is giga dumb
+		var result = regex.search(next_action.get_name(0))
+		if result:
+			has_been_visited = false ## Reset current node
+			next.reset_node = true
+		
+		## If we are already reset node, we clear the flags for this one
+		## then we ALSO set the next one as reset
+		if reset_node:
+			next.reset_node = true
+			has_been_visited = false
+			reset_node = false
 
 		next._start_action()
 
@@ -116,6 +136,12 @@ func _break_out() -> void:
 
 	## Final nodes will always be repeating
 	has_been_visited = false 
+	reset_node = false
+
+
+# func _clear_interact_tree() -> void:
+# 	has_been_visited = false
+# 	_start_next_action()
 		
 
 func _action_handle_dialogue() -> void:
@@ -155,11 +181,6 @@ func _action_handle_item() -> void:
 ## or if a certain choice option should trigger certain flag
 func _action_handle_custom_action() -> void:
 	pass
-
-
-func _clear_interact_tree() -> void:
-	pass
-
 
 
 ## Conditional export voodoo (why tf is this so complicated)
