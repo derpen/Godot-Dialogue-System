@@ -37,12 +37,9 @@ dialogues = Array[String](["Heheh...", "Come with me", "(He then make a
 creepy smile)"])
 next_action = NodePath("GameOverAction")
 
-[node name="GameOverAction" parent="Interactable/FirstDialogue/ChoiceComeWithHim/ChoiceAcceptDialogue" node_paths=PackedStringArray("custom_action") instance=ExtResource("2_umpva")]
+[node name="GameOverAction" parent="Interactable/FirstDialogue/ChoiceComeWithHim/ChoiceAcceptDialogue" instance=ExtResource("2_umpva")]
 action_type = 3
-custom_action = NodePath("GameOverScript")
-
-[node name="GameOverScript" type="Node" parent="Interactable/FirstDialogue/ChoiceComeWithHim/ChoiceAcceptDialogue/GameOverAction"]
-script = ExtResource("3_umpva")
+custom_action = ExtResource("3_umpva")
 
 [node name="ChoiceRun" parent="Interactable/FirstDialogue/ChoiceComeWithHim" instance=ExtResource("2_umpva")]
 dialogues = Array[String](["Tch.", "Kids these days are smart"])

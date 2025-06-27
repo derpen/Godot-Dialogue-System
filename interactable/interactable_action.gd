@@ -49,7 +49,7 @@ var next_action : NodePath:
 		update_configuration_warnings()
 
 
-var custom_action : InteractableCustomAction
+var custom_action : GDScript
 
 var has_been_visited : bool = false
 
@@ -196,7 +196,9 @@ func _action_handle_item() -> void:
 ## you want to queue_free() the item from the ground
 ## or if a certain choice option should trigger certain flag
 func _action_handle_custom_action() -> void:
-	pass
+	var new_action = custom_action.new()
+	if new_action is InteractableCustomAction:
+		new_action._run_custom_action()
 
 
 ## Conditional export voodoo (why tf is this so complicated)
@@ -273,29 +275,14 @@ func _get_property_list():
 				"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
 			})
 
-			# ret.append({
-			# 	"name": &"next_action",
-			# 	"type": TYPE_NODE_PATH,
-			# 	"hint" : PROPERTY_HINT_NODE_TYPE,
-			# 	"hint_string" : "InteractableAction",
-			# 	"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
-			# })
-
-			# ret.append({
-			# 	"name": &"next_action",
-			# 	"type": TYPE_NODE_PATH,
-			# 	"hint" : PROPERTY_HINT_NODE_TYPE,
-			# 	"hint_string" : "NodePath",
-			# 	"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
-			# })
-
 		if action_type == ACTION_TYPE.CUSTOM_ACTION:
 			ret.append({
 				"name": &"custom_action",
 				"type": TYPE_OBJECT,
-				"hint" : PROPERTY_HINT_NODE_TYPE,
-				"hint_string" : "InteractableCustomAction",
-				"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
+				"hint" : PROPERTY_HINT_RESOURCE_TYPE ,
+				"hint_string" : "GDScript",
+				# "usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
+				"usage": 4102
 			})
 
 			ret.append({
