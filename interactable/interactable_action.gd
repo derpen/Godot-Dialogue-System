@@ -175,6 +175,8 @@ func _action_handle_item() -> void:
 	if does_item_exist:
 
 		## Optionally removes item from inventory
+		## or.. actually, I think you can use
+		## custom action for this lol
 		# player_character._remove_item(item_to_check)
 
 		next_action = item_next_node_success
@@ -198,7 +200,13 @@ func _action_handle_item() -> void:
 func _action_handle_custom_action() -> void:
 	var new_action = custom_action.new()
 	if new_action is InteractableCustomAction:
-		new_action._run_custom_action()
+		## Add as a child so every script there works as expected
+		## then remove it after it's done
+		add_child(new_action)
+		await new_action._run_custom_action()
+		remove_child(get_child(0))
+		
+		_start_next_action()
 
 
 ## Conditional export voodoo (why tf is this so complicated)
