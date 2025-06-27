@@ -38,8 +38,8 @@ var choices : Dictionary[String, NodePath]
 ## want an NPC to give something for free to the player
 var item_to_check : String
 var item_to_give : String
-var dialogues_item_check_fail : Array[String]
-var dialogues_item_check_success : Array[String]
+var item_next_node_fail : NodePath ## If item check failed
+var item_next_node_success : NodePath ## If item check succeded
 var has_given_item : bool = false ## If item given already, will just skip this node
 
 ## Can be empty
@@ -171,7 +171,23 @@ func _action_handle_choice_picked(which_choice : NodePath) -> void:
 	
 
 func _action_handle_item() -> void:
-	print("we haven't implemented Item handling yet, lol")
+	var does_item_exist : bool = player_character._check_item(item_to_check)
+	if does_item_exist:
+
+		## Optionally removes item from inventory
+		# player_character._remove_item(item_to_check)
+
+		next_action = item_next_node_success
+
+		## Also give item if any
+		if !item_to_give.is_empty():
+			player_character._give_item(item_to_give)
+
+
+	else:
+		next_action = item_next_node_fail
+
+	_start_next_action()
 
 
 ## Can add custom scripts here
@@ -240,26 +256,30 @@ func _get_property_list():
 				"type": TYPE_STRING,
 				"usage": PROPERTY_USAGE_DEFAULT,
 			})
-			ret.append({
-				"name": &"dialogues_item_check_fail",
-				"type": TYPE_ARRAY,
-				"hint_string" : "%d/%d:" % [TYPE_STRING, PROPERTY_HINT_MULTILINE_TEXT],
-				"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
-			})
-			ret.append({
-				"name": &"dialogues_item_check_success",
-				"type": TYPE_ARRAY,
-				"hint_string" : "%d/%d:" % [TYPE_STRING, PROPERTY_HINT_MULTILINE_TEXT],
-				"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
-			})
 
 			ret.append({
-				"name": &"next_action",
+				"name": &"item_next_node_fail",
 				"type": TYPE_NODE_PATH,
 				"hint" : PROPERTY_HINT_NODE_TYPE,
 				"hint_string" : "InteractableAction",
 				"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
 			})
+
+			ret.append({
+				"name": &"item_next_node_success",
+				"type": TYPE_NODE_PATH,
+				"hint" : PROPERTY_HINT_NODE_TYPE,
+				"hint_string" : "InteractableAction",
+				"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
+			})
+
+			# ret.append({
+			# 	"name": &"next_action",
+			# 	"type": TYPE_NODE_PATH,
+			# 	"hint" : PROPERTY_HINT_NODE_TYPE,
+			# 	"hint_string" : "InteractableAction",
+			# 	"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
+			# })
 
 			# ret.append({
 			# 	"name": &"next_action",
@@ -303,7 +323,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 		if next.get_parent() == get_parent():
 			warnings.append("
-			Warning: Next action must NOT be a sibling node or itself. 
+			Warning: Next Action must NOT be a sibling node or itself. 
 			Please change to either a parent, a child, or leave it empty
 			")
 

@@ -4,3 +4,5 @@
 
 [node name="InteractableAction" type="Node"]
 script = ExtResource("1_ki3qb")
+dialogues = Array[String]([])
+next_action = NodePath("")

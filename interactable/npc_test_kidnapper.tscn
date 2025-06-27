@@ -28,25 +28,24 @@ next_action = NodePath("ChoiceComeWithHim")
 [node name="ChoiceComeWithHim" parent="Interactable/FirstDialogue" instance=ExtResource("2_umpva")]
 action_type = 1
 choices = Dictionary[String, NodePath]({
-"Accept Offer": NodePath("ChoiceAcceptDialogue/GameOverAction"),
+"Accept Offer": NodePath("ChoiceAcceptDialogue"),
 "Run Away": NodePath("ChoiceRun")
 })
 
 [node name="ChoiceAcceptDialogue" parent="Interactable/FirstDialogue/ChoiceComeWithHim" instance=ExtResource("2_umpva")]
-dialogues = Array[String]([])
-next_action = NodePath("")
+dialogues = Array[String](["Heheh...", "Come with me", "(He then make a 
+creepy smile)"])
+next_action = NodePath("GameOverAction")
 
 [node name="GameOverAction" parent="Interactable/FirstDialogue/ChoiceComeWithHim/ChoiceAcceptDialogue" node_paths=PackedStringArray("custom_action") instance=ExtResource("2_umpva")]
 action_type = 3
 custom_action = NodePath("GameOverScript")
-next_action = NodePath("")
 
 [node name="GameOverScript" type="Node" parent="Interactable/FirstDialogue/ChoiceComeWithHim/ChoiceAcceptDialogue/GameOverAction"]
 script = ExtResource("3_umpva")
 
 [node name="ChoiceRun" parent="Interactable/FirstDialogue/ChoiceComeWithHim" instance=ExtResource("2_umpva")]
 dialogues = Array[String](["Tch.", "Kids these days are smart"])
-next_action = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

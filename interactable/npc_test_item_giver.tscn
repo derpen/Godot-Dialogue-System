@@ -34,15 +34,13 @@ choices = Dictionary[String, NodePath]({
 action_type = 2
 item_to_check = ""
 item_to_give = "Money"
-dialogues_item_check_fail = Array[String]([])
-dialogues_item_check_success = Array[String](["Ok, here you go"])
-next_action = NodePath("FinalDialogue")
+item_next_node_fail = NodePath("")
+item_next_node_success = NodePath("FinalDialogue")
 
 [node name="FinalDialogue" parent="Interactable/FirstDialogue/ChoiceOfferingItem/GivingItem" instance=ExtResource("2_d018b")]
 dialogues = Array[String](["Use it well", "Like for example,
 give it to this other
 guy in front"])
-next_action = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

@@ -9,6 +9,7 @@ class_name PlayerController extends CharacterBody3D
 @export var raycaster : InteractRaycaster
 @export var player_state : PLAYER_STATE = PLAYER_STATE.WALKING
 @export var dialogue_handler : DialogueHandler
+@export var item_notification : ItemNotification
 
 var mouse_mode : Input.MouseMode = Input.MOUSE_MODE_CAPTURED
 var enable_cam : bool = true
@@ -94,19 +95,26 @@ func _physics_process(_delta: float) -> void:
 ## TODO
 ## Should play audio here
 func _give_item(item: String) -> void:
-	if item not in inventory: ## I hope this works
+	if item not in inventory:
 		inventory[item] = item
+		item_notification._show_item_received(item)
 
-		print("Item: " + item +  " has been added")
+
+func _remove_item(item: String) -> void:
+	if item in inventory:
+		inventory.erase(item)
+		item_notification._show_item_removed(item)
 
 
 func _check_item(item: String) -> bool:
+	## if its empty, just return true right away
+	if item.is_empty():
+		return true
+
 	var result : bool
 	if item in inventory:
-		print("Item " + item  + " found")
 		result = true
 	else:
-		print("Item " + item  + " not found")
 		result = false
 
 	return result
