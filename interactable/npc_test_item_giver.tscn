@@ -20,15 +20,20 @@ collision_mask = 0
 focus_target = NodePath("../CollisionShape3D/head/FocusTarget")
 
 [node name="FirstDialogue" parent="Interactable" instance=ExtResource("2_d018b")]
-dialogues = Array[String](["Hello", "Do you want this item?"])
+dialogues = Array[String](["Hello", "Do you want some money?"])
 next_action = NodePath("ChoiceOfferingItem")
 
 [node name="ChoiceOfferingItem" parent="Interactable/FirstDialogue" instance=ExtResource("2_d018b")]
 action_type = 1
 choices = Dictionary[String, NodePath]({
 "Accept": NodePath("GivingItem"),
-"Refuse": NodePath("..")
+"Refuse": NodePath("RefusingItem")
 })
+
+[node name="RefusingItem" parent="Interactable/FirstDialogue/ChoiceOfferingItem" instance=ExtResource("2_d018b")]
+dialogues = Array[String](["Aww, okay then", "Come back to me
+if you want it again"])
+next_action = NodePath("../..")
 
 [node name="GivingItem" parent="Interactable/FirstDialogue/ChoiceOfferingItem" instance=ExtResource("2_d018b")]
 action_type = 2

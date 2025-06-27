@@ -20,7 +20,7 @@ collision_mask = 0
 focus_target = NodePath("../CollisionShape3D/head/FocusTarget")
 
 [node name="FirstDialogue" parent="Interactable" instance=ExtResource("2_x4tgo")]
-dialogues = Array[String](["Hey, you have item?"])
+dialogues = Array[String](["Hey, you have money?"])
 next_action = NodePath("CheckMoney")
 
 [node name="CheckMoney" parent="Interactable/FirstDialogue" instance=ExtResource("2_x4tgo")]

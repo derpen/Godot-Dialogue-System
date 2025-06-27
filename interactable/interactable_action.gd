@@ -23,7 +23,6 @@ var dialogues : Array[String]
 ## key would be choices, value would be the next Action to call
 ## key would be shown as label for Choice Buttons in player.tscn
 var choices : Dictionary[String, NodePath]
-# var has_chosen : bool = false
 
 ## Item related
 ## Will always perform check before perform giving
@@ -42,20 +41,17 @@ var item_next_node_fail : NodePath ## If item check failed
 var item_next_node_success : NodePath ## If item check succeded
 var has_given_item : bool = false ## If item given already, will just skip this node
 
+var custom_action : GDScript
+
 ## Can be empty
 var next_action : NodePath:
 	set(new_node):
 		next_action = new_node
 		update_configuration_warnings()
 
-
-var custom_action : GDScript
-
 var has_been_visited : bool = false
-
-var player_character : PlayerController
-
 var reset_node : bool = false
+var player_character : PlayerController
 
 ## This is where we would handle the shenanigans
 func _start_action() -> void:
@@ -139,29 +135,12 @@ func _break_out() -> void:
 	reset_node = false
 
 
-# func _clear_interact_tree() -> void:
-# 	has_been_visited = false
-# 	_start_next_action()
-		
-
 func _action_handle_dialogue() -> void:
 	player_character.dialogue_handler._dialogue_play(dialogues)
 
 
 func _action_handle_choice() -> void:
 	player_character.dialogue_handler._choices_show(choices)
-
-	# if !has_chosen:
-	# 	## Send choices data to handler
-	# 	has_chosen = true
-	# 	player_character.dialogue_handler._choices_show(choices)
-
-	# else:
-	# 	## Else, just go straight to next_action
-	# 	## I think this is not needed?
-	# 	## Since if node has been visited,
-	# 	## this function will never be called anyway
-	# 	_start_next_action()
 
 
 func _action_handle_choice_picked(which_choice : NodePath) -> void:
@@ -204,7 +183,11 @@ func _action_handle_custom_action() -> void:
 		## then remove it after it's done
 		add_child(new_action)
 		await new_action._run_custom_action()
-		remove_child(get_child(0))
+		var childrens = get_children()
+		for child in childrens:
+			if child is InteractableCustomAction:
+				remove_child(child)
+				break
 		
 		_start_next_action()
 
@@ -230,14 +213,6 @@ func _get_property_list():
 				"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
 			})
 
-			# ret.append({
-			# 	"name": &"next_action",
-			# 	"type": TYPE_NODE_PATH,
-			# 	"hint" : PROPERTY_HINT_NODE_TYPE,
-			# 	"hint_string" : "NodePath",
-			# 	"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
-			# })
-
 		if action_type == ACTION_TYPE.CHOICE:
 			ret.append({
 				"name": &"choices",
@@ -246,14 +221,6 @@ func _get_property_list():
 				"hint_string" : "%d:;%d/%d:InteractableAction" % [TYPE_STRING, TYPE_NODE_PATH, PROPERTY_HINT_NODE_TYPE],
 				"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
 			})
-
-			# ret.append({
-			# 	"name": &"choices",
-			# 	"type": TYPE_DICTIONARY,
-			# 	# "hint": PROPERTY_HINT_DICTIONARY_TYPE,
-			# 	"hint_string" : "%d:;%d/%d:NodePath" % [TYPE_STRING, TYPE_NODE_PATH, PROPERTY_HINT_NODE_TYPE],
-			# 	"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
-			# })
 
 		if action_type == ACTION_TYPE.ITEM:
 			ret.append({
@@ -301,7 +268,6 @@ func _get_property_list():
 				"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
 			})
 		
-
 		return ret
 
 

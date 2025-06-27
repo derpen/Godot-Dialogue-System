@@ -11,7 +11,6 @@ class_name DialogueHandler extends Control
 
 var current_interact_node : InteractableAction
 
-
 func _dialogue_play(dialogues: Array[String]) -> void:
 	for sentence in dialogues:
 		dialogue_label.text = ""
@@ -50,7 +49,6 @@ func _choices_show(choices_values: Dictionary) -> void:
 
 		button_container.add_child(new_button)
 		choices_button.append(new_button)
-
 
 
 func _choices_pick(which_choice: NodePath) -> void:

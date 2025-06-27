@@ -6,9 +6,6 @@ class_name InteractRaycaster extends RayCast3D
 @export var crosshair_box : TextureRect
 @export var dialogue_handler : DialogueHandler
 
-#func _ready() -> void:
-	#GlobalScripts.dialogue_ended.connect(_interaction_end)
-
 
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("interact"):

@@ -44,13 +44,6 @@ func _start_interact() -> void:
 			child._start_action()
 
 
-## TODO
-## Cleaning up
-## Probably will use signal
-func _done_interacting() -> void:
-	is_being_interacted = false
-
-
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings : PackedStringArray = []
 	var found_action : bool = false
