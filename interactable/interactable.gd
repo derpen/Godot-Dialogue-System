@@ -13,9 +13,14 @@ class_name Interactable extends Node
 		update_configuration_warnings()
 
 
+@export var start_node : InteractableAction:
+	set(new_sn):
+		start_node = new_sn
+		update_configuration_warnings()
+
+
 var player_node : PlayerController
 var parent_node : Node3D
-var is_being_interacted : bool = false ## TODO: future me here, what is this for
 
 func _ready() -> void:
 	if !Engine.is_editor_hint():
@@ -38,10 +43,8 @@ func _ready() -> void:
 
 
 func _start_interact() -> void:
-	for child in get_children():
-		if child is InteractableAction:
-			is_being_interacted = true ## TODO: Turn this off later
-			child._start_action()
+	if start_node:
+		start_node._start_action()
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -57,5 +60,8 @@ func _get_configuration_warnings() -> PackedStringArray:
 			
 	if !found_action:
 		warnings.append("Warning: Please add InteractableAction node as a child")
+
+	if !start_node:
+		warnings.append("Warning: Please add an InteractableAction as a start_node!")
 
 	return warnings

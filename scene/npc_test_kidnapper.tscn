@@ -17,8 +17,9 @@ radius = 0.2
 collision_layer = 5
 collision_mask = 0
 
-[node name="Interactable" parent="." node_paths=PackedStringArray("focus_target") instance=ExtResource("1_7hstg")]
+[node name="Interactable" parent="." node_paths=PackedStringArray("focus_target", "start_node") instance=ExtResource("1_7hstg")]
 focus_target = NodePath("../CollisionShape3D/head/FocusTarget")
+start_node = NodePath("FirstDialogue")
 
 [node name="FirstDialogue" parent="Interactable" instance=ExtResource("2_umpva")]
 dialogues = Array[String](["Psst Kid", "You want some free
@@ -36,14 +37,18 @@ choices = Dictionary[String, NodePath]({
 dialogues = Array[String](["Heheh...", "I'm kidding. I don't
 have any candy", "(He then make a 
 creepy smile)"])
-next_action = NodePath("GameOverAction")
+next_action = NodePath("GameOver")
 
-[node name="GameOverAction" parent="Interactable/FirstDialogue/ChoiceComeWithHim/ChoiceAcceptDialogue" instance=ExtResource("2_umpva")]
-action_type = 3
+[node name="GameOver" parent="Interactable/FirstDialogue/ChoiceComeWithHim/ChoiceAcceptDialogue" instance=ExtResource("2_umpva")]
+action_type = 4
 custom_action = ExtResource("3_umpva")
+next_action = NodePath("Break")
+
+[node name="Break" parent="Interactable/FirstDialogue/ChoiceComeWithHim/ChoiceAcceptDialogue/GameOver" instance=ExtResource("2_umpva")]
+action_type = 3
 next_action = NodePath("FinalDialogue")
 
-[node name="FinalDialogue" parent="Interactable/FirstDialogue/ChoiceComeWithHim/ChoiceAcceptDialogue/GameOverAction" instance=ExtResource("2_umpva")]
+[node name="FinalDialogue" parent="Interactable/FirstDialogue/ChoiceComeWithHim/ChoiceAcceptDialogue/GameOver/Break" instance=ExtResource("2_umpva")]
 dialogues = Array[String](["(This guy creeps me out)"])
 
 [node name="ChoiceRun" parent="Interactable/FirstDialogue/ChoiceComeWithHim" instance=ExtResource("2_umpva")]

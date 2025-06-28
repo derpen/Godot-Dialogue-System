@@ -12,12 +12,13 @@ size = Vector3(0.2, 0.2, 0.2)
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_4ea8n"]
 radius = 0.2
 
-[node name="NPCItemGiver" type="CharacterBody3D"]
+[node name="NPCStopTest" type="CharacterBody3D"]
 collision_layer = 5
 collision_mask = 0
 
-[node name="Interactable" parent="." node_paths=PackedStringArray("focus_target") instance=ExtResource("1_e7cgo")]
+[node name="Interactable" parent="." node_paths=PackedStringArray("focus_target", "start_node") instance=ExtResource("1_e7cgo")]
 focus_target = NodePath("../CollisionShape3D/head/FocusTarget")
+start_node = NodePath("FirstDialogue")
 
 [node name="FirstDialogue" parent="Interactable" instance=ExtResource("2_5xya2")]
 dialogues = Array[String](["Good day", "It's a bit cold out
