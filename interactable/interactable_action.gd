@@ -4,7 +4,28 @@ class_name InteractableAction extends Node
 ## A lot of voodoos in this file
 ## Apologies
 
-enum ACTION_TYPE { NORMAL_DIALOGUE, CHOICE, ITEM, CUSTOM_ACTION }
+enum ACTION_TYPE { 
+	## Will show dialogue
+	NORMAL_DIALOGUE, 
+
+	## Will spawn a button that is handled by Player class. 
+	## Key will be the text of the button,
+	## while the value will be the next node. 
+	## I should probably switch that up though, lol
+	CHOICE, 
+
+	## Can give an item to the player, and also check if
+	## player has certain item, before allowing them
+	## to proceed down the action tree
+	ITEM, 
+
+	## Stop interaction temporarily, next node will continue
+	## after being interacted again
+	STOP, 
+
+	## Add your own action to do on each Action node
+	CUSTOM_ACTION
+	 }
 
 @export var action_type : ACTION_TYPE:
 	set(new_action_type):
@@ -85,6 +106,9 @@ func _start_action() -> void:
 
 			elif action_type == ACTION_TYPE.ITEM:
 				_action_handle_item()
+
+			elif action_type == ACTION_TYPE.STOP:
+				_action_handle_stop()
 				
 			elif action_type == ACTION_TYPE.CUSTOM_ACTION:
 				_action_handle_custom_action()
@@ -141,6 +165,12 @@ func _action_handle_dialogue() -> void:
 
 func _action_handle_choice() -> void:
 	player_character.dialogue_handler._choices_show(choices)
+
+
+func _action_handle_stop() -> void:
+	player_character._set_player_state_walking()
+	has_been_visited = true
+	reset_node = false ## Not sure this is needed ?
 
 
 func _action_handle_choice_picked(which_choice : NodePath) -> void:
@@ -244,6 +274,15 @@ func _get_property_list():
 
 			ret.append({
 				"name": &"item_next_node_success",
+				"type": TYPE_NODE_PATH,
+				"hint" : PROPERTY_HINT_NODE_TYPE,
+				"hint_string" : "InteractableAction",
+				"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
+			})
+		
+		if action_type == ACTION_TYPE.STOP:
+			ret.append({
+				"name": &"next_action",
 				"type": TYPE_NODE_PATH,
 				"hint" : PROPERTY_HINT_NODE_TYPE,
 				"hint_string" : "InteractableAction",
