@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://b55ybw77u563" path="res://interactable/interactable.tscn" id="1_7hstg"]
 [ext_resource type="PackedScene" uid="uid://t5x38d5w0gmf" path="res://interactable/interactable_action.tscn" id="2_umpva"]
-[ext_resource type="Script" uid="uid://covacw536d8o2" path="res://interactable/npc_test_kidnapper_gameover.gd" id="3_umpva"]
+[ext_resource type="Script" uid="uid://covacw536d8o2" path="res://scene/npc_test_kidnapper_gameover.gd" id="3_umpva"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_i76gx"]
 radius = 0.2

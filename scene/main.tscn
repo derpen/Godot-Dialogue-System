@@ -1,10 +1,10 @@
 [gd_scene load_steps=11 format=3 uid="uid://dvt72kowexqch"]
 
 [ext_resource type="PackedScene" uid="uid://eun1ujiv3phy" path="res://player/Player.tscn" id="1_itxqv"]
-[ext_resource type="PackedScene" uid="uid://dgwydnjkbagj5" path="res://interactable/chair.tscn" id="2_v0l8b"]
-[ext_resource type="PackedScene" uid="uid://bjkr0ao1woxql" path="res://interactable/npc_test_item_giver.tscn" id="3_wp4xf"]
-[ext_resource type="PackedScene" uid="uid://i3wsjs7e1kj1" path="res://interactable/npc_test_item_receiver.tscn" id="4_brvut"]
-[ext_resource type="PackedScene" uid="uid://c63ybpwk6l64e" path="res://interactable/npc_test_kidnapper.tscn" id="5_0ha60"]
+[ext_resource type="PackedScene" uid="uid://dgwydnjkbagj5" path="res://scene/chair.tscn" id="2_v0l8b"]
+[ext_resource type="PackedScene" uid="uid://bjkr0ao1woxql" path="res://scene/npc_test_item_giver.tscn" id="3_wp4xf"]
+[ext_resource type="PackedScene" uid="uid://i3wsjs7e1kj1" path="res://scene/npc_test_item_receiver.tscn" id="4_brvut"]
+[ext_resource type="PackedScene" uid="uid://c63ybpwk6l64e" path="res://scene/npc_test_kidnapper.tscn" id="5_0ha60"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_itxqv"]
 
